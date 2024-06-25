@@ -1,12 +1,20 @@
 package se.lexicon.g49marketplace.service;
 
+import se.lexicon.g49marketplace.domain.dto.UserDTOForm;
+import se.lexicon.g49marketplace.domain.dto.UserDTOView;
+
+import java.util.List;
+
 public interface UserService {
 
     //register(email, password, username)
-    //authenticate
-    //findById
-    //findAll
+    UserDTOView register(UserDTOForm dtoForm);
     //findByEmail
-    //update
+    UserDTOView findByEmail(String email);
+    //findAll
+    List<UserDTOView> findAll();
+    // update
+    UserDTOView update(UserDTOForm dtoForm);
     //delete
+    void delete(String email);
 }
