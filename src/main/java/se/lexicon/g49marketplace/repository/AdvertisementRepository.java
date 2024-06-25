@@ -5,11 +5,21 @@ import org.springframework.stereotype.Repository;
 import se.lexicon.g49marketplace.domain.entity.Advertisement;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
-    List<Advertisement> findAllByOrderByIdDesc();
-    List<Advertisement> findAllByOrderByIdAsc();
-    List<Advertisement> findAllByExpirationDateAfter(LocalDate expirationDate);
+
+    // Find all advertisements that are not expired
+    List<Advertisement> findByExpirationDateAfter(LocalDateTime now);
+
+    // Find advertisements by category that are not expired
+    List<Advertisement> findByCategoryIdAndExpirationDateAfter(Long categoryId, LocalDateTime now);
+
+    // Find advertisements by user that are not expired
+    List<Advertisement> findByUserIdAndExpirationDateAfter(Long userId, LocalDateTime now);
+
+    // Optional: Find all expired advertisements (useful for cleanup tasks)
+    List<Advertisement> findByExpirationDateBefore(LocalDateTime now);
 }
