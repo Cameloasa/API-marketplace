@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -20,13 +21,48 @@ public class Advertisement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
     private Long id;
+
+
+    @Column(nullable = false)
     private String title;
+    @Lob
+    @Column(nullable = false)
     private String description;
-    private LocalDate creationDate;
-    private LocalDate expirationDate;
+
+    private LocalDateTime creationDate;
+    private LocalDateTime expirationDate;
+
+
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany
-    private List<Category> categories;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    @PrePersist
+    public void dateCreatedAndExpired() {
+        creationDate = LocalDateTime.now();
+        expirationDate = creationDate.plusDays(30);
+    }
+
+    //Constructor
+
+
+    public Advertisement(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
+    // Helper method to update expiration date
+    public void updateExpirationDate(int days) {
+        expirationDate = LocalDateTime.now().plusDays(days);
+    }
+
+    //Helper method to check if advertisement is expired
+    public boolean isExpired() {
+        return expirationDate.isBefore(LocalDateTime.now());
+    }
+
 }
