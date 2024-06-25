@@ -25,6 +25,7 @@ public class Advertisement {
 
     @Column(nullable = false)
     private String title;
+
     @Lob
     @Column(nullable = false)
     private String description;
