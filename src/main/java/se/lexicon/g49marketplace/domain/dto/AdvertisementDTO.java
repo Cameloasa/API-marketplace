@@ -18,8 +18,9 @@ public class AdvertisementDTO {
     @NotBlank(message = "This field should not be null.")
     @Size(min = 5, max = 100)
     private String title;
-    @NotBlank(message = "This field should not be null.")
-    private String description;
+
+    @NotBlank(message = " HTML cannot be empty. ")
+    private String htmlContent;//description
 
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;

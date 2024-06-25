@@ -42,18 +42,17 @@ public class Advertisement {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @PrePersist
-    public void dateCreatedAndExpired() {
-        creationDate = LocalDateTime.now();
-        expirationDate = creationDate.plusDays(30);
-    }
-
     //Constructor
-
 
     public Advertisement(String title, String description) {
         this.title = title;
         this.description = description;
+    }
+
+    @PrePersist
+    public void dateCreatedAndExpired() {
+        creationDate = LocalDateTime.now();
+        expirationDate = creationDate.plusDays(30);
     }
 
     // Helper method to update expiration date
