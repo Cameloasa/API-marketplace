@@ -12,7 +12,6 @@ import se.lexicon.g49marketplace.exception.DataNotFoundException;
 import se.lexicon.g49marketplace.repository.UserRepository;
 import se.lexicon.g49marketplace.util.CustomPasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,11 +101,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void delete(String email) {
         // Check if the user exists
-        if(!userRepository.existsByEmail(email)) {
-            throw new DataNotFoundException("Email not found");
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new DataNotFoundException("Email not found"));
+
         // Delete the user
-        userRepository.deleteById(email);
+        userRepository.delete(user);
 
     }
 }

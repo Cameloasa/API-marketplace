@@ -11,6 +11,9 @@ public class UserConverterImpl implements UserConverter {
 
     @Override
     public UserDTOView toDTO(User user) {
+        if (user == null) {
+            return null;
+        }
         return UserDTOView.builder()
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
@@ -20,6 +23,9 @@ public class UserConverterImpl implements UserConverter {
 
     @Override
     public User toEntity(UserDTOView dto) {
+        if (dto == null) {
+            return null;
+        }
         return User.builder()
                 .email(dto.getEmail())
                 .phoneNumber(dto.getPhoneNumber())
