@@ -7,10 +7,12 @@ import se.lexicon.g49marketplace.domain.entity.User;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByEmail(String email);
-    Optional<User> findByEmailIgnoreCase(String email);
-    Optional<User> findByEmailContains(String email);
-    Optional<User> findByUsername(String username);
+
+    //Check if the email exists in the database
+    Boolean existsByEmail(String email);
+
+
 }

@@ -2,7 +2,8 @@ package se.lexicon.g49marketplace.service;
 
 public interface UserService {
 
-    //create
+    //register(email, password, username)
+    //authenticate
     //findById
     //findAll
     //findByEmail
