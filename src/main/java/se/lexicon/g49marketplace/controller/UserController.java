@@ -28,8 +28,15 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDTOView> doRegisterUser( @RequestBody @Valid UserDTOForm dtoForm) {
-        System.out.println("DTO Form: " + dtoForm);
-        UserDTOView responseBody = userService.register(dtoForm);
+        System.out.println(" Register DTO Form: " + dtoForm);
+        UserDTOView responseBody = userService.registerUser(dtoForm);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<UserDTOView> doAuthenticateUser(@RequestBody @Valid UserDTOForm dtoForm) {
+        System.out.println("Authenticate DTO Form: " + dtoForm);
+        UserDTOView responseBody = userService.authenticateUser(dtoForm);
+        return ResponseEntity.status(HttpStatus.FOUND).body(responseBody);
     }
 }

@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTOView register(UserDTOForm dtoForm) {
+    public UserDTOView registerUser(UserDTOForm dtoForm) {
         //check for params
         if(dtoForm == null) throw new IllegalArgumentException("dtoForm cannot be null");
         //check if the email exists in the database
@@ -107,5 +107,19 @@ public class UserServiceImpl implements UserService {
         // Delete the user
         userRepository.delete(user);
 
+    }
+
+    @Override
+    public UserDTOView authenticateUser(UserDTOForm dtoForm) {
+        // Check for null parameters
+        if (dtoForm == null) throw new IllegalArgumentException("dtoForm cannot be null");
+        // Find the user by email
+        User user = userRepository.findByEmail(dtoForm.getEmail())
+                .orElseThrow(() -> new DataNotFoundException("Invalid email or password"));
+        // Check if the password matches
+        if (!customPasswordEncoder.matches(dtoForm.getPassword(), user.getPassword())) {
+            throw new DataNotFoundException("Invalid email or password");
+        }
+        return userConverter.toDTO(user);
     }
 }

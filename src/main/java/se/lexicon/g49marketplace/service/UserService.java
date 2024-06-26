@@ -8,7 +8,9 @@ import java.util.List;
 public interface UserService {
 
     //register(email, password, username)
-    UserDTOView register(UserDTOForm dtoForm);
+    UserDTOView registerUser(UserDTOForm dtoForm);
+    //Authenticate user
+    UserDTOView authenticateUser(UserDTOForm dtoForm);
     //findByEmail
     UserDTOView findByEmail(String email);
     //findAll
