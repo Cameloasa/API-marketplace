@@ -1,20 +1,20 @@
 package se.lexicon.g49marketplace.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.lexicon.g49marketplace.domain.dto.UserDTOForm;
 import se.lexicon.g49marketplace.domain.dto.UserDTOView;
 import se.lexicon.g49marketplace.service.UserService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 @Validated
 public class UserController {
 
@@ -38,5 +38,19 @@ public class UserController {
         System.out.println("Authenticate DTO Form: " + dtoForm);
         UserDTOView responseBody = userService.authenticateUser(dtoForm);
         return ResponseEntity.status(HttpStatus.FOUND).body(responseBody);
+    }
+
+    @GetMapping
+    public ResponseEntity<UserDTOView> doFindUserByEmail(
+            @RequestParam
+            @NotEmpty
+            @NotNull
+            @Email
+            String email) {
+        System.out.println(">>>>>>> Find User By Email has been executed");
+        System.out.println("Find User By Email: " + email);
+        UserDTOView responseBody = userService.findByEmail(email);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+
     }
 }

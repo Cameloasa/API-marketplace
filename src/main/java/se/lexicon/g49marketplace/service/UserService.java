@@ -13,6 +13,8 @@ public interface UserService {
     UserDTOView authenticateUser(UserDTOForm dtoForm);
     //findByEmail
     UserDTOView findByEmail(String email);
+    //boolean exist by email
+    boolean existsByEmail(String email);
     //findAll
     List<UserDTOView> findAll();
     // update

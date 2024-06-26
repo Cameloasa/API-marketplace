@@ -7,6 +7,7 @@ import se.lexicon.g49marketplace.converter.UserConverter;
 import se.lexicon.g49marketplace.domain.dto.UserDTOForm;
 import se.lexicon.g49marketplace.domain.dto.UserDTOView;
 import se.lexicon.g49marketplace.domain.entity.User;
+import se.lexicon.g49marketplace.exception.AuthenticationException;
 import se.lexicon.g49marketplace.exception.DataDuplicateException;
 import se.lexicon.g49marketplace.exception.DataNotFoundException;
 import se.lexicon.g49marketplace.repository.UserRepository;
@@ -110,6 +111,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTOView authenticateUser(UserDTOForm dtoForm) {
         // Check for null parameters
         if (dtoForm == null) throw new IllegalArgumentException("dtoForm cannot be null");
@@ -117,9 +119,15 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(dtoForm.getEmail())
                 .orElseThrow(() -> new DataNotFoundException("Invalid email or password"));
         // Check if the password matches
-        if (!customPasswordEncoder.matches(dtoForm.getPassword(), user.getPassword())) {
-            throw new DataNotFoundException("Invalid email or password");
+        if (customPasswordEncoder.matches(dtoForm.getPassword(), user.getPassword())) {
+            return userConverter.toDTO(user);
+        } else {
+            throw new AuthenticationException("Invalid email or password");
         }
-        return userConverter.toDTO(user);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

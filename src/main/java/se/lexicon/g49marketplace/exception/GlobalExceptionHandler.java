@@ -31,7 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(dto);
     }
 
-    @ExceptionHandler({DataDuplicateException.class,DataNotFoundException.class,IllegalArgumentException.class})
+    @ExceptionHandler({DataDuplicateException.class,DataNotFoundException.class, AuthenticationException.class,IllegalArgumentException.class})
     public ResponseEntity<ErrorDTO> handleEmailException(Exception e){
         ErrorDTO dto = new ErrorDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(dto);
