@@ -5,6 +5,7 @@ import se.lexicon.g49marketplace.domain.dto.AdvertisementDTOView;
 import se.lexicon.g49marketplace.domain.entity.Advertisement;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface AdvertisementService {
 
@@ -12,12 +13,11 @@ public interface AdvertisementService {
     Advertisement createAdvertisement(AdvertisementDTOForm advertisementDTO);
     //add advertising to user
     AdvertisementDTOView addAdvertisementToPerson(String email , AdvertisementDTOForm dtoForm);
-    //remove advertising after expiration date
-    AdvertisementDTOView deleteAdvertisement(AdvertisementDTOForm dtoForm, LocalDateTime expirationDate);
-    //findByCreationDate
-    AdvertisementDTOView findAdvertisementByCreationDate(AdvertisementDTOForm dtoForm, LocalDateTime creationDate);
-    //findByExpirationDate
-    AdvertisementDTOView findAdvertisementByExpirationDate(AdvertisementDTOForm dtoForm, LocalDateTime expirationDate);
     //findByUserEmail
     AdvertisementDTOView findAdvertisementByUserEmail(String email,AdvertisementDTOForm dtoForm);
+    //find active advertisement
+    List<Advertisement> getActiveAdvertisements();
+    //remove advertising after expiration date
+    boolean deleteAdvertisementAfterExpirationDate();
+
 }
