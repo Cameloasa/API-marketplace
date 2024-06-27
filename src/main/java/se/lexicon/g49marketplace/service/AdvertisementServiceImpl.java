@@ -23,11 +23,12 @@ import java.util.stream.Collectors;
 public class AdvertisementServiceImpl implements AdvertisementService {
 
     private final AdvertisementRepository advertisementRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository) {
+    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, UserRepository userRepository) {
         this.advertisementRepository = advertisementRepository;
-
+        this.userRepository = userRepository;
     }
 
     private AdvertisementDTOView convertToAdvertisementDTOView(Advertisement advertisement) {
@@ -44,22 +45,42 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     @Transactional
     public AdvertisementDTOView createAdvertisement(AdvertisementDTOForm adDtoForm) {
+        // Check if user exists, otherwise create a new one
+        Optional<User> optionalUser = userRepository.findByEmail(adDtoForm.getUser().getEmail());
+
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+            // todo Verify username and password if necessary
+        } else {
+            user = User.builder()
+                    .email(adDtoForm.getUser().getEmail())
+                    .username(adDtoForm.getUser().getUsername())
+                    .password(adDtoForm.getUser().getPassword())
+                    .phoneNumber(adDtoForm.getUser().getPhoneNumber())
+                    .build();
+            user = userRepository.save(user);
+        }
+
         //Create a new ad entity using the DTO and builder
         Advertisement advertisement = Advertisement.builder()
-                .id(adDtoForm.getId())
                 .title(adDtoForm.getTitle())
                 .description(adDtoForm.getDescription())
                 .creationDate(adDtoForm.getCreationDate())
                 .expirationDate(adDtoForm.getExpirationDate())
+                .user(user) // Associate the advertisement with the user
                 .build();
+
         // Save the created entity to the database
         Advertisement savedAd = advertisementRepository.save(advertisement);
+
         // Convert the saved entity to a DTOView user using builder
         UserDTOView buildUserDtoView = UserDTOView.builder()
                 .email(savedAd.getUser().getEmail())
                 .username(savedAd.getUser().getUsername())
                 .phoneNumber(savedAd.getUser().getPhoneNumber())
                 .build();
+
         //return adDTO view using builder
         return AdvertisementDTOView.builder()
                 .id(savedAd.getId())

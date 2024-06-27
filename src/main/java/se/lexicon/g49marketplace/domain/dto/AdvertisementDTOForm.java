@@ -32,7 +32,6 @@ public class AdvertisementDTOForm {
     private LocalDateTime expirationDate;
 
     @NotNull(message = "User details are required.")
-    @Email(message = "Invalid email format.")
     private UserDTOForm user;
 
 }
