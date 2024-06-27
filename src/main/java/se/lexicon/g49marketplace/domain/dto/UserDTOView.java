@@ -1,6 +1,7 @@
 package se.lexicon.g49marketplace.domain.dto;
 
 import lombok.*;
+import se.lexicon.g49marketplace.domain.entity.User;
 
 @AllArgsConstructor
 @NoArgsConstructor

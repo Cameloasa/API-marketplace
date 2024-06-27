@@ -10,13 +10,11 @@ import java.util.List;
 public interface AdvertisementService {
 
     //create
-    Advertisement createAdvertisement(AdvertisementDTOForm advertisementDTO);
+    AdvertisementDTOView createAdvertisement(AdvertisementDTOForm dtoForm);
     //add advertising to user
-    AdvertisementDTOView addAdvertisementToPerson(String email , AdvertisementDTOForm dtoForm);
-    //findByUserEmail
-    AdvertisementDTOView findAdvertisementByUserEmail(String email,AdvertisementDTOForm dtoForm);
+    AdvertisementDTOView addAdvertisementToUser(String email , AdvertisementDTOForm dtoForm);
     //find active advertisement
-    List<Advertisement> getActiveAdvertisements();
+    List<AdvertisementDTOView> getActiveAdvertisements();
     //remove advertising after expiration date
     boolean deleteAdvertisementAfterExpirationDate();
 

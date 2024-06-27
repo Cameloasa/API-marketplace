@@ -17,10 +17,12 @@ public class AdvertisementDTOView {
     private Long id;
     private String title;
     private String description;
+    private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
-    private boolean published;
-    private boolean deleted;
     private boolean active;
     private User user;
+
+
+
 
 }

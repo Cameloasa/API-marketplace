@@ -1,6 +1,7 @@
 package se.lexicon.g49marketplace.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import se.lexicon.g49marketplace.domain.entity.User;
@@ -16,20 +17,19 @@ import java.time.LocalDateTime;
 @Builder
 public class AdvertisementDTOForm {
 
-    @NotBlank(message = "This field should not be null.")
+    @NotBlank
     private Long id;
 
-    @NotBlank(message = "This field should not be null.")
-    @Size(min = 5, max = 100)
+    @NotBlank(message = "Title is required..")
+    @Size(min = 10, max = 100)
     private String title;
 
-    @NotBlank(message = " HTML cannot be empty. ")
-    private String html;//description
+    @NotBlank(message = " Description cannot be empty. ")
+    private String description;//Use HTML content here
 
-    @NotBlank
-    private LocalDateTime creationDate = LocalDateTime.now();
     private LocalDateTime expirationDate = LocalDateTime.now().plusDays(30);
-    private boolean active;
-    private boolean deleted;
-    private User user;
+
+    @NotNull(message = "Email is required.")
+    private User userEmail;
+
 }

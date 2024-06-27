@@ -28,7 +28,7 @@ public class Advertisement {
 
     @Lob
     @Column(nullable = false)
-    private String description;
+    private String description;//this will hold HTML content
 
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
@@ -37,10 +37,6 @@ public class Advertisement {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
 
     //Constructor
 
@@ -65,4 +61,12 @@ public class Advertisement {
         return expirationDate.isBefore(LocalDateTime.now());
     }
 
+    public void addUser(User user) {
+        this.user = user;
+
+    }
+
+    public void removeUser(User user) {
+        this.user = null;
+    }
 }
