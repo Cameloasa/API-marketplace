@@ -33,6 +33,6 @@ public class AdvertisementDTOForm {
 
     @NotNull(message = "Email is required.")
     @Email(message = "Invalid email format.")
-    private String userEmail;
+    private UserDTOForm user;
 
 }
