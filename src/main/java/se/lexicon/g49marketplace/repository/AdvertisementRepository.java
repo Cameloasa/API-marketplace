@@ -20,8 +20,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     // Find all advertisements that are not expired
     List<Advertisement> findByExpirationDateBefore(LocalDateTime now);
 
-    List<Advertisement> findByExpirationDateAfter(LocalDateTime now);
-
     // Find all expired advertisements
     List<Advertisement> findAllByExpirationDate(LocalDateTime expirationDate);
 

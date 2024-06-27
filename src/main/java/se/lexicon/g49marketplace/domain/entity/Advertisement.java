@@ -33,7 +33,6 @@ public class Advertisement {
 
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
-    private boolean isExpired;
 
 
     @ManyToOne
@@ -58,7 +57,7 @@ public class Advertisement {
 
     //Helper method to check if advertisement is expired
     public boolean isExpired() {
-        return expirationDate.isBefore(LocalDateTime.now());
+        return expirationDate.isAfter(LocalDateTime.now());
     }
 
 
