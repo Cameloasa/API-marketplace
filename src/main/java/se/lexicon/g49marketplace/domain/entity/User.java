@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -54,4 +55,6 @@ public class User {
         advertisements.remove(advertisement);
         advertisement.setUser(null);
     }
+
+
 }

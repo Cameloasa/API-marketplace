@@ -3,6 +3,7 @@ package se.lexicon.g49marketplace.converter;
 import org.springframework.stereotype.Component;
 import se.lexicon.g49marketplace.domain.dto.AdvertisementDTOForm;
 import se.lexicon.g49marketplace.domain.dto.AdvertisementDTOView;
+import se.lexicon.g49marketplace.domain.dto.UserDTOView;
 import se.lexicon.g49marketplace.domain.entity.Advertisement;
 
 @Component
@@ -15,6 +16,13 @@ public class AdvertisementConverterImpl implements AdvertisementConverter {
         if (advertisement == null) {
             return null;
         }
+            // Convert User entity to UserDTOView
+            UserDTOView userDTOView = UserDTOView.builder()
+                    .email(advertisement.getUser().getEmail())
+                    .username(advertisement.getUser().getUsername())
+                    .phoneNumber(advertisement.getUser().getPhoneNumber())
+                    .build();
+
         return AdvertisementDTOView.builder()
                 .id(advertisement.getId())
                 .title(advertisement.getTitle())

@@ -40,35 +40,41 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     @Transactional
     public AdvertisementDTOView createAdvertisement(AdvertisementDTOForm dtoForm) {
-        //check if advertisement is in the database
-        if(dtoForm == null) throw new IllegalArgumentException("AdvertisementDTOForm is null");
-        //Check if the advertisement exist in the database, if exist already throw a data duplicate exception
-        boolean advertisementExists = advertisementRepository.existsById(dtoForm.getId());
-        if (advertisementExists)
-            throw new DataDuplicateException("Advertisement already exists");
+        try {
+            // Check if advertisementDTOForm is null
+            if (dtoForm == null) {
+                throw new IllegalArgumentException("AdvertisementDTOForm is null");
+            }
 
-        //Convert AdvertisementDTOForm to AdvertisementEntity using converter
-        Advertisement advertisement = advertisementConverter.toEntity(dtoForm);
+            // Check if the advertisement exists in the database
+            if (advertisementRepository.existsById(dtoForm.getId())) {
+                throw new DataDuplicateException("Advertisement already exists with ID: " + dtoForm.getId());
+            }
 
-        String userEmail = dtoForm.getUserEmail().getEmail();
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new DataNotFoundException("User not found with email: " + userEmail));
-        advertisement.addUser(user);
+            // Convert AdvertisementDTOForm to AdvertisementEntity using converter
+            Advertisement advertisement = advertisementConverter.toEntity(dtoForm);
 
-        Advertisement savedAdvertisement = advertisementRepository.save(advertisement);
+            // Find user by email
+            String userEmail = dtoForm.getUserEmail();
+            User user = userRepository.findByEmail(userEmail)
+                    .orElseThrow(() -> new DataNotFoundException("User not found with email: " + userEmail));
 
-        UserDTOView userDTOView = userConverter.toDTO(user);
+            // Set user to advertisement
+            advertisement.addUser(user);
 
-        return AdvertisementDTOView.builder()
-                .id(savedAdvertisement.getId())
-                .title(savedAdvertisement.getTitle())
-                .description(savedAdvertisement.getDescription())
-                .creationDate(savedAdvertisement.getCreationDate())
-                .expirationDate(savedAdvertisement.getExpirationDate())
-                .active(!savedAdvertisement.isExpired())
-                .user(user)
-                .build();
-        
+            // Save advertisement to the database
+            Advertisement savedAdvertisement = advertisementRepository.save(advertisement);
+
+            // Convert savedAdvertisement to AdvertisementDTOView and return
+            return advertisementConverter.toDTO(savedAdvertisement);
+        } catch (IllegalArgumentException | DataDuplicateException | DataNotFoundException ex) {
+            // Log the exception and throw custom error response
+            ex.printStackTrace(); // Logging the exception stack trace
+            throw new RuntimeException("Failed to create advertisement: " + ex.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Unexpected error occurred while creating advertisement");
+        }
     }
 
     @Override

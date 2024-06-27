@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +33,7 @@ public class Advertisement {
 
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
+    private boolean isExpired;
 
 
     @ManyToOne
@@ -40,9 +42,12 @@ public class Advertisement {
 
     //Constructor
 
-    public Advertisement(String title, String description) {
+    public Advertisement(String title, String description, LocalDateTime creationDate, LocalDateTime expirationDate, User user) {
         this.title = title;
         this.description = description;
+        this.creationDate = LocalDateTime.now();
+        this.expirationDate = LocalDateTime.now().plusDays(30);
+        this.user = user;
     }
 
     @PrePersist
@@ -51,22 +56,12 @@ public class Advertisement {
         expirationDate = creationDate.plusDays(30);
     }
 
-    // Helper method to update expiration date
-    public void updateExpirationDate(int days) {
-        expirationDate = LocalDateTime.now().plusDays(days);
-    }
-
     //Helper method to check if advertisement is expired
     public boolean isExpired() {
         return expirationDate.isBefore(LocalDateTime.now());
     }
 
-    public void addUser(User user) {
-        this.user = user;
 
-    }
 
-    public void removeUser(User user) {
-        this.user = null;
-    }
+
 }

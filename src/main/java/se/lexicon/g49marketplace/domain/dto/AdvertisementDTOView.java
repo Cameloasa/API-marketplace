@@ -20,7 +20,7 @@ public class AdvertisementDTOView {
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
     private boolean active;
-    private User user;
+    private UserDTOView user;
 
 
 
