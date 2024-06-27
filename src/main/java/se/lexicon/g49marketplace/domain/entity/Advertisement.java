@@ -41,7 +41,7 @@ public class Advertisement {
 
     //Constructor
 
-    public Advertisement(String title, String description, LocalDateTime creationDate, LocalDateTime expirationDate, User user) {
+    public Advertisement(String title, String description, User user) {
         this.title = title;
         this.description = description;
         this.creationDate = LocalDateTime.now();
@@ -55,10 +55,6 @@ public class Advertisement {
         expirationDate = creationDate.plusDays(30);
     }
 
-    //Helper method to check if advertisement is expired
-    public boolean isExpired() {
-        return expirationDate.isAfter(LocalDateTime.now());
-    }
 
 
 

@@ -23,12 +23,11 @@ import java.util.stream.Collectors;
 public class AdvertisementServiceImpl implements AdvertisementService {
 
     private final AdvertisementRepository advertisementRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, UserRepository userRepository) {
+    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository) {
         this.advertisementRepository = advertisementRepository;
-        this.userRepository = userRepository;
+
     }
 
     @Override
