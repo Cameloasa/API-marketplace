@@ -30,6 +30,17 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     }
 
+    private AdvertisementDTOView convertToAdvertisementDTOView(Advertisement advertisement) {
+        return AdvertisementDTOView.builder()
+                .id(advertisement.getId())
+                .title(advertisement.getTitle())
+                .description(advertisement.getDescription())
+                .creationDate(advertisement.getCreationDate())
+                .expirationDate(advertisement.getExpirationDate())
+                .build();
+    }
+
+
     @Override
     @Transactional
     public AdvertisementDTOView createAdvertisement(AdvertisementDTOForm adDtoForm) {
@@ -62,7 +73,10 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public List<AdvertisementDTOView> findAdvertisementBetweenCreationDateAndExpirationDate(LocalDateTime creationDate, LocalDateTime expirationDate) {
-        return List.of();
+        // Retrieve ad with dates between the given dates
+        List<Advertisement> advertisementList = advertisementRepository.selectAdvertisementBetweenDates(creationDate,expirationDate);
+
+        return null;
     }
 
     @Override
@@ -84,4 +98,6 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     public boolean deleteAdvertisementAfterExpirationDate() {
         return false;
     }
+
+
 }

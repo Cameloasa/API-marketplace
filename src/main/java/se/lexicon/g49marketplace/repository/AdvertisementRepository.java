@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import se.lexicon.g49marketplace.domain.entity.Advertisement;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,5 +23,5 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     List<Advertisement> findByExpirationDateBefore(LocalDateTime now);
 
     @Query("select a from Advertisement a where a.expirationDate between :from and :to")
-    List<Advertisement> selectAdvertisementBetweenDates(@Param("from") LocalDate from, @Param("to") LocalDate to);
+    List<Advertisement> selectAdvertisementBetweenDates(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
 }
