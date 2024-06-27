@@ -3,10 +3,8 @@ package se.lexicon.g49marketplace.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,7 +29,9 @@ public class Advertisement {
     @Column(nullable = false)
     private String description;//this will hold HTML content
 
+    @Column(nullable = false, updatable = false)
     private LocalDateTime creationDate;
+    @Column(nullable = false, updatable = false)
     private LocalDateTime expirationDate;
 
 
@@ -44,19 +44,20 @@ public class Advertisement {
     public Advertisement(String title, String description, User user) {
         this.title = title;
         this.description = description;
-        this.creationDate = LocalDateTime.now();
-        this.expirationDate = LocalDateTime.now().plusDays(30);
         this.user = user;
     }
 
     @PrePersist
-    public void dateCreatedAndExpired() {
+    public void prePersist() {
         creationDate = LocalDateTime.now();
         expirationDate = creationDate.plusDays(30);
     }
 
 
+    }
 
 
 
-}
+
+
+

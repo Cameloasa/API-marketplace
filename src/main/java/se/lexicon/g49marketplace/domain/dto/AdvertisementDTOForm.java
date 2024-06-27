@@ -28,10 +28,10 @@ public class AdvertisementDTOForm {
     @NotBlank(message = " Description cannot be empty. ")
     private String description;//Use HTML content here
 
-    private LocalDateTime creationDate = LocalDateTime.now();
-    private LocalDateTime expirationDate = LocalDateTime.now().plusDays(30);
+    private LocalDateTime creationDate;
+    private LocalDateTime expirationDate;
 
-    @NotNull(message = "Email is required.")
+    @NotNull(message = "User details are required.")
     @Email(message = "Invalid email format.")
     private UserDTOForm user;
 

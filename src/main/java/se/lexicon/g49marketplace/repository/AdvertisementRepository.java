@@ -15,13 +15,13 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
 
     // Find advertisements by user that are not expired
-    List<Advertisement> findByUserEmailAndExpirationDateBefore(String email, LocalDateTime now);
+    List<Advertisement> findByUserEmailAndExpirationDateAfter(String email, LocalDateTime now);
 
     // Find all advertisements that are not expired
-    List<Advertisement> findByExpirationDateBefore(LocalDateTime now);
+    List<Advertisement> findByExpirationDateAfter(LocalDateTime now);
 
     // Find all expired advertisements
-    List<Advertisement> findAllByExpirationDate(LocalDateTime expirationDate);
+    List<Advertisement> findByExpirationDateBefore(LocalDateTime now);
 
     @Query("select a from Advertisement a where a.expirationDate between :from and :to")
     List<Advertisement> selectAdvertisementBetweenDates(@Param("from") LocalDate from, @Param("to") LocalDate to);
