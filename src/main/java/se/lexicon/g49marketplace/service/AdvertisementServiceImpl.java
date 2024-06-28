@@ -8,6 +8,7 @@ import se.lexicon.g49marketplace.domain.dto.AdvertisementDTOView;
 import se.lexicon.g49marketplace.domain.dto.UserDTOView;
 import se.lexicon.g49marketplace.domain.entity.Advertisement;
 import se.lexicon.g49marketplace.domain.entity.User;
+import se.lexicon.g49marketplace.exception.DataNotFoundException;
 import se.lexicon.g49marketplace.repository.AdvertisementRepository;
 import se.lexicon.g49marketplace.repository.UserRepository;
 
@@ -48,7 +49,6 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         User user;
         if (optionalUser.isPresent()) {
             user = optionalUser.get();
-            // todo Verify username and password if necessary
         } else {
             user = User.builder()
                     .email(adDtoForm.getUser().getEmail())
@@ -104,18 +104,40 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
+    @Transactional
     public AdvertisementDTOView addAdvertisementToUser(String email, AdvertisementDTOForm adDtoForm) {
-        return null;
+       //check param
+        if (email == null || adDtoForm == null) {
+            throw new DataNotFoundException("Email or advertisement cannot be null");
+        }
+        // create user
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        }
+        //create advertisement
+        AdvertisementDTOView createdAdvertisement = AdvertisementDTOView.builder()
+                .title(adDtoForm.getTitle())
+                .description(adDtoForm.getDescription())
+                .creationDate(adDtoForm.getCreationDate())
+                .expirationDate(adDtoForm.getExpirationDate())
+                .user(new UserDTOView("email","User name","phoneNumber"))
+                .build();
+        return createAdvertisement(adDtoForm);
     }
 
     @Override
     public List<AdvertisementDTOView> getActiveAdvertisements() {
-        return List.of();
+        List<Advertisement> activeAdvertisements = advertisementRepository.findByExpirationDateBefore(LocalDate.now());
+        return activeAdvertisements.stream().map(this::convertToAdvertisementDTOView).collect(Collectors.toList());
     }
 
     @Override
     public boolean deleteAdvertisementAfterExpirationDate() {
-        return false;
+        List<Advertisement> expiredAdvertisements = advertisementRepository.findAllByExpirationDateAfter(LocalDate.now());
+        advertisementRepository.deleteAll(expiredAdvertisements);
+        return true;
     }
 
 
