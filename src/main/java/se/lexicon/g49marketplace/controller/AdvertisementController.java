@@ -2,6 +2,7 @@ package se.lexicon.g49marketplace.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +12,7 @@ import se.lexicon.g49marketplace.domain.dto.AdvertisementDTOView;
 import se.lexicon.g49marketplace.domain.entity.Advertisement;
 import se.lexicon.g49marketplace.service.AdvertisementService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -33,4 +35,18 @@ public class AdvertisementController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
 
    }
+
+    @GetMapping("/between-dates")
+    public ResponseEntity<List<AdvertisementDTOView>> doFindAdvertisementsBetweenDates(
+           @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+           @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+        System.out.println("List advertisements between dates: " + from + " to " + to);
+        List<AdvertisementDTOView> advertisements = advertisementService.findAdvertisementBetweenCreationDateAndExpirationDate(from,to);
+        return ResponseEntity.ok(advertisements);
+   }
+    @GetMapping("/user-advertisements")
+    public ResponseEntity<List<AdvertisementDTOView>> findAdvertisementsByUserEmail(@RequestParam String email) {
+        List<AdvertisementDTOView> advertisements = advertisementService.findAdvertisementByUserEmail(email);
+        return ResponseEntity.ok(advertisements);
+    }
 }

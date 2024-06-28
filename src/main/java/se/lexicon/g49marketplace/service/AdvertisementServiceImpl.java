@@ -3,18 +3,15 @@ package se.lexicon.g49marketplace.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.lexicon.g49marketplace.converter.UserConverter;
 import se.lexicon.g49marketplace.domain.dto.AdvertisementDTOForm;
 import se.lexicon.g49marketplace.domain.dto.AdvertisementDTOView;
 import se.lexicon.g49marketplace.domain.dto.UserDTOView;
 import se.lexicon.g49marketplace.domain.entity.Advertisement;
 import se.lexicon.g49marketplace.domain.entity.User;
-import se.lexicon.g49marketplace.exception.DataDuplicateException;
-import se.lexicon.g49marketplace.exception.DataNotFoundException;
 import se.lexicon.g49marketplace.repository.AdvertisementRepository;
 import se.lexicon.g49marketplace.repository.UserRepository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -93,16 +90,17 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public List<AdvertisementDTOView> findAdvertisementBetweenCreationDateAndExpirationDate(LocalDateTime creationDate, LocalDateTime expirationDate) {
+    public List<AdvertisementDTOView> findAdvertisementBetweenCreationDateAndExpirationDate(LocalDate from, LocalDate to) {
         // Retrieve ad with dates between the given dates
-        List<Advertisement> advertisementList = advertisementRepository.selectAdvertisementBetweenDates(creationDate,expirationDate);
+        List<Advertisement> advertisementList = advertisementRepository.selectAdvertisementBetweenDates(from,to);
+        return advertisementList.stream().map(this::convertToAdvertisementDTOView).collect(Collectors.toList());
 
-        return null;
     }
 
     @Override
-    public Optional<AdvertisementDTOView> findAdvertisementByUserId(String email) {
-        return Optional.empty();
+    public List<AdvertisementDTOView> findAdvertisementByUserEmail(String email) {
+        List<Advertisement> advertisements = advertisementRepository.findByUserEmail(email);
+        return advertisements.stream().map(this::convertToAdvertisementDTOView).collect(Collectors.toList());
     }
 
     @Override

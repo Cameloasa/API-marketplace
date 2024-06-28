@@ -3,7 +3,8 @@ package se.lexicon.g49marketplace.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 
 @AllArgsConstructor
@@ -30,9 +31,9 @@ public class Advertisement {
     private String description;//this will hold HTML content
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime creationDate;
+    private LocalDate creationDate;
     @Column(nullable = false, updatable = false)
-    private LocalDateTime expirationDate;
+    private LocalDate expirationDate;
 
 
     @ManyToOne
@@ -49,7 +50,7 @@ public class Advertisement {
 
     @PrePersist
     public void prePersist() {
-        creationDate = LocalDateTime.now();
+        creationDate = LocalDate.now();
         expirationDate = creationDate.plusDays(30);
     }
 

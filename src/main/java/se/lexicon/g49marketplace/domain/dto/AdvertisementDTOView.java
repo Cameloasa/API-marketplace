@@ -1,9 +1,9 @@
 package se.lexicon.g49marketplace.domain.dto;
 
 import lombok.*;
-import se.lexicon.g49marketplace.domain.entity.User;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Getter
 @Setter
@@ -17,8 +17,8 @@ public class AdvertisementDTOView {
     private Long id;
     private String title;
     private String description;
-    private LocalDateTime creationDate;
-    private LocalDateTime expirationDate;
+    private LocalDate creationDate;
+    private LocalDate expirationDate;
     private UserDTOView user;
 
 

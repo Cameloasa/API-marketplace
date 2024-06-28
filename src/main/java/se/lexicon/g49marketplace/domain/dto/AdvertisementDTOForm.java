@@ -1,13 +1,12 @@
 package se.lexicon.g49marketplace.domain.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import se.lexicon.g49marketplace.domain.entity.User;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 
 @AllArgsConstructor
@@ -28,8 +27,8 @@ public class AdvertisementDTOForm {
     @NotBlank(message = " Description cannot be empty. ")
     private String description;//Use HTML content here
 
-    private LocalDateTime creationDate;
-    private LocalDateTime expirationDate;
+    private LocalDate creationDate;
+    private LocalDate expirationDate;
 
     @NotNull(message = "User details are required.")
     private UserDTOForm user;
