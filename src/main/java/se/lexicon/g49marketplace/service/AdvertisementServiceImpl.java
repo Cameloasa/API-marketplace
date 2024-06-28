@@ -106,14 +106,14 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public List<AdvertisementDTOView> getActiveAdvertisements() {
-        List<Advertisement> activeAdvertisements = advertisementRepository.findByExpirationDateBefore(LocalDate.now());
+        List<Advertisement> activeAdvertisements = advertisementRepository.findAllByExpirationDateAfter(LocalDate.now());
         return activeAdvertisements.stream().map(this::convertToAdvertisementDTOView).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public boolean deleteAdvertisementAfterExpirationDate() {
-        List<Advertisement> expiredAdvertisements = advertisementRepository.findAllByExpirationDateAfter(LocalDate.now());
+        List<Advertisement> expiredAdvertisements = advertisementRepository.findByExpirationDateBefore(LocalDate.now());
         advertisementRepository.deleteAll(expiredAdvertisements);
         return true;
     }
