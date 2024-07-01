@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Builder
+
 public class AdvertisementDTOForm {
 
     @NotNull(message = "ID is required.")

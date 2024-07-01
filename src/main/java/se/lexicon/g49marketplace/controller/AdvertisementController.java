@@ -49,4 +49,28 @@ public class AdvertisementController {
         List<AdvertisementDTOView> advertisements = advertisementService.findAdvertisementByUserEmail(email);
         return ResponseEntity.ok(advertisements);
     }
-}
+
+    @GetMapping("/active")
+    public ResponseEntity<List<AdvertisementDTOView>> getActiveAdvertisements() {
+        List<AdvertisementDTOView> activeAdvertisements = advertisementService.getActiveAdvertisements();
+        return ResponseEntity.ok(activeAdvertisements);
+    }
+
+    @DeleteMapping("/delete-expired")
+    public ResponseEntity<Void> deleteAdvertisementsAfterExpirationDate() {
+        boolean isDeleted = advertisementService.deleteAdvertisementAfterExpirationDate();
+        if (isDeleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+        @PostMapping("/add-to-user")
+        public ResponseEntity<AdvertisementDTOView> addAdvertisementToUser(@RequestParam String email, @RequestBody @Valid AdvertisementDTOForm adDtoForm) {
+            AdvertisementDTOView responseBody = advertisementService.addAdvertisementToUser(email, adDtoForm);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+        }
+    }
+
