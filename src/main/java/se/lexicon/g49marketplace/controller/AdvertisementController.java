@@ -28,7 +28,7 @@ public class AdvertisementController {
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("/create")//this is working in Postman
    public ResponseEntity<AdvertisementDTOView> doCreateAdvertisement(@RequestBody @Valid AdvertisementDTOForm adDtoForm) {
         System.out.println(" Register DTO Form: " + adDtoForm);
         AdvertisementDTOView responseBody = advertisementService.createAdvertisement(adDtoForm);

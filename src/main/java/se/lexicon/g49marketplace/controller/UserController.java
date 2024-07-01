@@ -16,8 +16,9 @@ import se.lexicon.g49marketplace.service.UserService;
 @RestController
 @RequestMapping("/api/v1/users")
 @Validated
-public class UserController {
 
+public class UserController {
+    //all methods is working in Postman
     private final UserService userService;
 
     @Autowired
