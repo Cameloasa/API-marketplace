@@ -13,8 +13,8 @@ import java.util.List;
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
 
 
-    @Query("SELECT a FROM Advertisement a WHERE a.user.email = :email")
-    List<Advertisement> findByUserEmail(@Param("email") String email);
+    //@Query("SELECT a FROM Advertisement a WHERE a.user.email = :email")
+    List<Advertisement> findByUser_Email(String email);
 
     List<Advertisement> findAllByExpirationDateAfter(LocalDate now);
 

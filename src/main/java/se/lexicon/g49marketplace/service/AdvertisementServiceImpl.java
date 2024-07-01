@@ -100,7 +100,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public List<AdvertisementDTOView> findAdvertisementByUserEmail(String email) {
-        List<Advertisement> advertisements = advertisementRepository.findByUserEmail(email);
+        List<Advertisement> advertisements = advertisementRepository.findByUser_Email(email);
         return advertisements.stream().map(this::convertToAdvertisementDTOView).collect(Collectors.toList());
     }
 
