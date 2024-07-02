@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import se.lexicon.g49marketplace.domain.dto.AdvertisementDTOForm;
 import se.lexicon.g49marketplace.domain.dto.AdvertisementDTOView;
-import se.lexicon.g49marketplace.domain.entity.Advertisement;
 import se.lexicon.g49marketplace.service.AdvertisementService;
 
 import java.time.LocalDate;
@@ -30,22 +29,23 @@ public class AdvertisementController {
 
     @PostMapping("/create")//this is working in Postman
    public ResponseEntity<AdvertisementDTOView> doCreateAdvertisement(@RequestBody @Valid AdvertisementDTOForm adDtoForm) {
-        System.out.println(" Register DTO Form: " + adDtoForm);
+        System.out.println(">>>>>>>>> Register DTO Form: " + adDtoForm);
         AdvertisementDTOView responseBody = advertisementService.createAdvertisement(adDtoForm);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
 
    }
 
-    @GetMapping("/between-dates")
+    @GetMapping("/between-dates")//it's working
     public ResponseEntity<List<AdvertisementDTOView>> doFindAdvertisementsBetweenDates(
            @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        System.out.println("List advertisements between dates: " + from + " to " + to);
-        List<AdvertisementDTOView> advertisements = advertisementService.findAdvertisementBetweenCreationDateAndExpirationDate(from,to);
+        System.out.println(">>>>>>>>> List advertisements between dates: " + from + " to " + to);
+        List<AdvertisementDTOView> advertisements = advertisementService.findAllAdvertisementBetweenDates(from,to);
         return ResponseEntity.ok(advertisements);
    }
-    @GetMapping("/user-advertisements")
+    @GetMapping("/user-advertisements")//its working
     public ResponseEntity<List<AdvertisementDTOView>> findAdvertisementsByUserEmail(@RequestParam String email) {
+        System.out.println(">>>>>>>>>  Find advertisement by User email: " + email);
         List<AdvertisementDTOView> advertisements = advertisementService.findAdvertisementByUserEmail(email);
         return ResponseEntity.ok(advertisements);
     }

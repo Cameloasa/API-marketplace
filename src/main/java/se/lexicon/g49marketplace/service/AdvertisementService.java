@@ -11,7 +11,7 @@ public interface AdvertisementService {
     //create
     AdvertisementDTOView createAdvertisement(AdvertisementDTOForm adDtoForm);
     //find ad between creation date and expiration date
-    List<AdvertisementDTOView> findAdvertisementBetweenCreationDateAndExpirationDate(LocalDate from, LocalDate to);
+    List<AdvertisementDTOView> findAllAdvertisementBetweenDates(LocalDate from, LocalDate to);
     //find advertisement by user email
     List<AdvertisementDTOView> findAdvertisementByUserEmail(String email);
     //add advertising to user
